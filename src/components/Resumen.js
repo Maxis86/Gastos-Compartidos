@@ -12,7 +12,7 @@ const Resumen = () => {
   let totalMaxi = totalGasto(gastosMaxi);
   let totalGigi = totalGasto(gastosGigi);
 
-  let resumen = totalMaxi - totalGigi;
+  let resumen = (totalMaxi - totalGigi)/2;
 
   if (resumen > 0) {
     mensaje = "A favor de Maxi";

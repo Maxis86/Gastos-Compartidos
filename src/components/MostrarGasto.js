@@ -2,9 +2,7 @@ import React, { useContext } from "react";
 
 import gastosContext from "../context/gastos/gastosContext";
 
-
 const MostrarGasto = ({ gasto }) => {
-
   const gastoContext = useContext(gastosContext);
   const { eliminarGasto } = gastoContext;
 
@@ -15,7 +13,7 @@ const MostrarGasto = ({ gasto }) => {
           <div className="row">
             <div className="col-12 d-flex">
               <h3>
-                <b>  {gasto.nombre}</b>
+                <b> {gasto.nombre}</b>
               </h3>
             </div>
             <div className="col-12 d-flex justify-content-end">
@@ -25,7 +23,13 @@ const MostrarGasto = ({ gasto }) => {
         </div>
 
         <div className="col-2">
-          <button type="button" className="btn btn-outline-danger mb-6 " onClick={() => eliminarGasto(gasto.id)}>x</button>
+          <button
+            type="button"
+            className="btn btn-outline m-6"
+            onClick={() => eliminarGasto(gasto.id)}
+          >
+            <ion-icon name="trash"></ion-icon>{" "}
+          </button>
         </div>
       </div>
     </>
@@ -33,4 +37,3 @@ const MostrarGasto = ({ gasto }) => {
 };
 
 export default MostrarGasto;
-

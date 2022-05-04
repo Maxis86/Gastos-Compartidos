@@ -67,4 +67,45 @@ export const editarPrecio = (id, nuevoPrecio) =>{
 }
 
 
+//Crea una colección nueva y un documento
 
+import { collection, addDoc } from "firebase/firestore";
+
+try {
+  const docRef = await addDoc(collection(db, "users"), {
+    first: "Ada",
+    last: "Lovelace", // Los documentos de una colección pueden contener diferentes conjuntos de información.
+    born: 1815
+  });
+  console.log("Document written with ID: ", docRef.id);
+} catch (e) {
+  console.error("Error adding document: ", e);
+}
+
+
+// método “get” para recuperar toda la colección.
+
+import { collection, getDocs } from "firebase/firestore";
+
+const querySnapshot = await getDocs(collection(db, "users"));
+querySnapshot.forEach((doc) => {
+  console.log(`${doc.id} => ${doc.data()}`);
+});
+
+
+ // db.collection("gastoMaxi").orderBy("fecha", "asc").onSnapshot((snap) => {
+    //   // se actualiza cada vez que hay un cambio
+    //   const gastosM = [];
+
+    //   snap.forEach((snapHijo) => {
+    //     gastosM.push({
+    //       id: snapHijo.id,
+    //       ...snapHijo.data(),
+    //     });
+    //   });
+
+    // dispatch({
+    //   type: OBTENER_GASTO_MAXI,
+    //   payload: gastosM,
+    // });
+    // });

@@ -2,15 +2,15 @@
   margin-bottom: 0!important;
 }
 body {
-  background: #000428;  /* fallback for old browsers */
+  background: #001e28;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #004e92, #000428);  
-  background: linear-gradient(to right, #004e92, #000428); 
+  background: linear-gradient(to right, #F8CB2E, #EE5007); 
   margin: 0;
   padding: 0;
   font-family: sans-serif;
 }
 header {
-  margin: 30px 0;
+  margin: 10px 0;
 }
 .contenido {
   padding:10px;
@@ -33,7 +33,7 @@ header {
 h1 {
   font-family: 'Raleway', sans-serif;
   font-weight: 100;
-  color: white;
+  color: #46244C;
   text-align: center;
   font-size: 4.8rem!important;
 }
@@ -49,23 +49,38 @@ h2 {
 h3 {
   font-family: 'Raleway', sans-serif;
   font-weight: 150;
-  color:#053932;
+  color:#06113C;
   margin-bottom:1px;
   font-size:1.5rem!important;
   text-align: center;
 }
 
+ion-icon {
+  color: rgb(253, 3, 3);
+  --ionicon-stroke-width: 8px;
+  font-size: 15px;
+}
+
 h4 {
   font-family: 'Raleway', sans-serif;
   font-weight: 100;
-  color:#004e92;
+  color:#557B83;
   margin-bottom: 0px;
   font-size:2rem!important;
   text-align: center;
 }
 
+h6 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 100;
+  color:#557B83;
+  margin-bottom: 0px;
+  margin-top: 0px;
+  font-size:3.5rem!important;
+  text-align: center;
+}
 .campo {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 .error {
   text-align: center;

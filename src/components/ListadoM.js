@@ -12,7 +12,7 @@ const ListadoM = () => {
     return ( 
         
         <>
-            <div >
+            <div style={{marginRight:8}}>
                 {gastosMaxi && gastosMaxi.map((gasto,index) => (
                     <MostrarGasto
                         key={index}
