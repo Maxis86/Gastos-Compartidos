@@ -2,9 +2,29 @@ import React, { useContext } from "react";
 
 import gastosContext from "../context/gastos/gastosContext";
 
+import swal from "sweetalert";
+
 const MostrarGasto = ({ gasto }) => {
   const gastoContext = useContext(gastosContext);
   const { eliminarGasto } = gastoContext;
+
+  const eliminar = (id) => {
+    swal({
+      title: "Estás seguro?",
+      text: "Una vez eliminado no se podrá recuperar",
+      icon: "warning",
+      buttons:  [ "NO" , "SI" ] ,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {  
+        eliminarGasto(id)
+
+      } else {
+      }
+    });
+      
+  };
 
   return (
     <>
@@ -26,7 +46,7 @@ const MostrarGasto = ({ gasto }) => {
           <button
             type="button"
             className="btn btn-outline m-6"
-            onClick={() => eliminarGasto(gasto.id)}
+            onClick={() => eliminar(gasto.id)}
           >
             <ion-icon name="trash"></ion-icon>{" "}
           </button>

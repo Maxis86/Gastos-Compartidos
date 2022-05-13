@@ -18,6 +18,13 @@ import {
   OBTENER_GASTO_MAXI,
   OBTENER_GASTO_GIGI,
   AGREGAR_MES,
+  AGREGAR_GASTO_MAXI,
+  AGREGAR_GASTO_GIGI,
+  ELIMINAR_GASTOS_MAXI,
+  ELIMINAR_GASTOS_GIGI,
+  ELIMINAR_ALERTA,
+  ELIMINAR_TODOS_GASTOS_MAXI,
+  ELIMINAR_TODOS_GASTOS_GIGI
 } from "../../types";
 
 const GastosState = (props) => {
@@ -25,6 +32,9 @@ const GastosState = (props) => {
     gastosMaxi: [],
     gastosGigi: [],
     mes: "",
+    alerta: {
+      msg:''
+    }
   };
 
   const [state, dispatch] = useReducer(gastosReducer, initialState);
@@ -43,10 +53,22 @@ const GastosState = (props) => {
         mes: gasto.mes,
         fecha: fecha,
       });
+
+      dispatch({
+        type: AGREGAR_GASTO_MAXI,
+        payload: gasto,
+      });
+      
       console.log("Documento escrito con el ID: ", docRef.id);
     } catch (e) {
       console.error("Error al agregar el documento: ", e);
     }
+
+    setTimeout(() => {
+      dispatch({
+        type: ELIMINAR_ALERTA,
+      });
+    }, 6000);
   };
 
   const agregarGastoGigi = async (gasto) => {
@@ -61,10 +83,22 @@ const GastosState = (props) => {
         mes: gasto.mes,
         fecha: fecha,
       });
+
+      dispatch({
+        type: AGREGAR_GASTO_GIGI,
+        payload: gasto,
+      });
+
       console.log("Documento escrito con el ID: ", docRef.id);
     } catch (e) {
       console.error("Error al agregar el documento: ", e);
     }
+
+    setTimeout(() => {
+      dispatch({
+        type: ELIMINAR_ALERTA,
+      });
+    }, 6000);
   };
 
   const agregarMes = (mes) => {
@@ -74,7 +108,7 @@ const GastosState = (props) => {
       const fecha = new Date();
       const mesHoy= fecha.getMonth();
 
-      mes = meses [mesHoy];
+      mes = meses[mesHoy];
     }
 
     dispatch({
@@ -92,12 +126,17 @@ const GastosState = (props) => {
         .doc(gasto.id)
         .delete()
         .then(() => {
-          console.log("Document successfully deleted!");
+          dispatch({
+            type: ELIMINAR_TODOS_GASTOS_GIGI,
+            payload: gasto.id,
+          });
         })
         .catch((error) => {
           console.error("Error removing document: ", error);
         })
     );
+
+    
   };
 
   const eliminarGastosMaxi = (gastosMaxi) => {
@@ -107,12 +146,22 @@ const GastosState = (props) => {
         .doc(gasto.id)
         .delete()
         .then(() => {
-          console.log("Document successfully deleted!");
+          dispatch({
+            type: ELIMINAR_TODOS_GASTOS_MAXI,
+            payload: gasto.id,
+          });
+          console.log("Todos los documentos de Maxi eliminados!");
         })
         .catch((error) => {
           console.error("Error removing document: ", error);
         })
     );
+
+    setTimeout(() => {
+      dispatch({
+        type: ELIMINAR_ALERTA,
+      });
+    }, 6000);
   };
 
   const eliminarGasto = (id) => {
@@ -120,7 +169,11 @@ const GastosState = (props) => {
       .doc(id)
       .delete()
       .then(() => {
-        console.log("Document successfully deleted!");
+        console.log("Documneto de Maxi eliminados!");
+        dispatch({
+          type: ELIMINAR_GASTOS_MAXI,
+          payload: id,
+        });
       })
       .catch((error) => {
         console.error("Error removing document: ", error);
@@ -130,11 +183,22 @@ const GastosState = (props) => {
       .doc(id)
       .delete()
       .then(() => {
-        console.log("Document successfully deleted!");
+        console.log("Documneto de Gigi eliminados!");
+        dispatch({
+          type: ELIMINAR_GASTOS_GIGI,
+          payload: id,
+        });
       })
       .catch((error) => {
         console.error("Error removing document: ", error);
       });
+      
+      
+      setTimeout(() => {
+        dispatch({
+          type: ELIMINAR_ALERTA,
+        });
+      }, 6000);
   };
 
   const obtenerProductos = async (mesActual) => {
@@ -144,7 +208,7 @@ const GastosState = (props) => {
       const fecha = new Date();
       const mesHoy= fecha.getMonth();
 
-      mesActual = meses [mesHoy];
+      mesActual = meses[mesHoy];
     }
 
     const q = query(
@@ -196,6 +260,7 @@ const GastosState = (props) => {
         gastosGigi: state.gastosGigi,
         gastosMaxi: state.gastosMaxi,
         mes: state.mes,
+        alerta: state.alerta,
         agregarGastoMaxi,
         agregarGastoGigi,
         obtenerProductos,
