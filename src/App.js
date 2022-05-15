@@ -10,6 +10,7 @@ import Resumen from "./components/Resumen";
 import swal from "sweetalert";
 
 import gastosContext from "./context/gastos/gastosContext";
+import { Header } from "./components/Header";
 
 function App() {
   const gastoContext = useContext(gastosContext);
@@ -35,7 +36,7 @@ function App() {
       title: "Estás seguro?",
       text: "Una vez eliminado no se podrá recuperar",
       icon: "warning",
-      buttons:  [ "Stop", "Do it!" ] ,
+      buttons:  [ "No", "Si" ] ,
       dangerMode: true,
     })
     .then((willDelete) => {
@@ -72,6 +73,7 @@ function App() {
   return (
     <div className="container">
       <header>
+        <Header/>
         <h1>Gastos Compartidos</h1>
 
         <div className="contenido-principal contenido">

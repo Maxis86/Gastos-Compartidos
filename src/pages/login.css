@@ -1,0 +1,87 @@
+
+
+:root {
+    --blanco: #ffffff;
+    --gris1: #edf2f6;
+    --gris2: #fdca6a;
+    --gris3: #1a202d;
+    --negro: #000000;
+    --headingFont:'Raleway', sans-serif;
+    --textFont:  'Roboto', sans-serif;
+  }
+
+  .login{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    background: url(https://thecolor.blog/wp-content/uploads/2021/02/psicologia-del-color-azul-tonos.png);
+    height: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    background-color: var(--gris2);
+  }
+ 
+  .form-usuario {
+
+      height: auto;
+      min-height: 6px;
+      display: flex;
+      padding: 20px;
+      font-family: var(--headingFont);
+      text-align: center;
+      font-weight: 800;
+      margin: 0 0 4rem 0;
+  }
+  .contenedor-form {
+      padding: 3rem 3rem;
+      max-width: 800px;
+      width: 300px;
+      height: 480px;
+      background-color: var(--blanco);
+      border-radius: 1rem;
+      font-size: 15px;
+     
+     
+  }
+  
+  .campo-form {
+      display: flex;
+      margin-top: .5rem;
+      align-items: center;
+
+  }
+  .campo-form:last-of-type {
+    margin: 0;
+  }
+  .campo-form label {
+    flex: 0 0 50px;
+    font-family: var(--headingFont);
+  }
+  .campo-form input[type="nombre"],
+  .campo-form input[type="password"],
+  .campo-form input[type="email"], 
+  .campo-form input[type="text"] {
+    border: 1px solid #2b83f6;
+    padding: 1rem;
+    max-width: 100%;
+    flex: 1;
+  }
+
+  .navLink {
+    font-family: var(--headingFont);
+    border: 1px solid #2b83f6;
+    border-radius: 1rem;
+    padding: .6rem;
+    font-size: 14px;
+    color: #2c3b5a;
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    margin-left: 10px;
+    text-decoration: none;
+    margin-top: 1rem;
+    
+  }
+  

@@ -4,11 +4,12 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import GastosState from "./context/gastos/gastosState"
+import { AppRouter } from "./AppRouter";
 
 ReactDOM.render(
   <React.StrictMode>
     <GastosState>
-      <App />
+      <AppRouter />
     </GastosState>
   </React.StrictMode>,
   document.getElementById("root")
