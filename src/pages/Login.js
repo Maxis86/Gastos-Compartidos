@@ -83,7 +83,7 @@ export const Login = () => {
 
         setTimeout(() => {
           setSpinner(false);
-          return history("../");
+          return history("../Home");
         }, 3000);
       })
       .catch((error) => {
@@ -151,17 +151,11 @@ export const Login = () => {
               />
             </div>
 
-            <NavLink activeClassName="active" className="navLink" to="../">
+            {/* <NavLink activeClassName="active" className="navLink" to="../">
               ir a Inicio
-            </NavLink>
+            </NavLink> */}
 
-            <NavLink
-              activeClassName="active"
-              className="navLink"
-              to="../Registrarse"
-            >
-              Registrarse
-            </NavLink>
+
 
             {/* {usuarioLogeado ? (
               <p className="mt-4">Usuario Registrado</p>
@@ -183,6 +177,14 @@ export const Login = () => {
                 />
               </div>
             )}
+
+            <NavLink
+              activeClassName="active"
+              className="navLink"
+              to="../Registrarse"
+            >
+              Registrarse
+            </NavLink>
           </form>
         </div>
       </div>

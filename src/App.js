@@ -74,7 +74,7 @@ function App() {
     <div className="container">
       <header>
         <Header/>
-        <h1>Gastos Compartidos</h1>
+        {/* <h1>Gastos Compartidos</h1> */}
 
         <div className="contenido-principal contenido">
           <Gasto />

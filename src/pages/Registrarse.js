@@ -115,7 +115,7 @@ export const Registrarse = () => {
 
         setTimeout(() => {
           setSpinner(false);
-          return history("/");
+          return history("../Home");
         }, 3000);
       })
       .catch((error) => {});
@@ -168,12 +168,10 @@ export const Registrarse = () => {
               />
             </div>
 
-            <NavLink activeClassName="active" className="navLink" to="../">
+            {/* <NavLink activeClassName="active" className="navLink" to="../">
               ir a Inicio
-            </NavLink>
-            <NavLink activeClassName="active" className="navLink" to="../login">
-              Login
-            </NavLink>
+            </NavLink> */}
+           
 
             {spinner ? (
               <div class="spinner">
@@ -189,6 +187,10 @@ export const Registrarse = () => {
                 />
               </div>
             )}
+
+            <NavLink activeClassName="active" className="navLink" to="../login">
+              Login
+            </NavLink>
           </form>
         </div>
       </div>

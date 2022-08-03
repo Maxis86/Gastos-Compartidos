@@ -16,9 +16,10 @@ export const AppRouter = () => {
         <BrowserRouter>
           <div>
             <Routes>
-              <Route path="/" element={<App />} />
+              <Route path="/" element={<Login />} />
               <Route exact path="/Login" element={<Login />} />
               <Route exact path="/Registrarse" element={<Registrarse />} />
+              <Route exact path="/Home" element={<App />} />
             </Routes>
           </div>
         </BrowserRouter>
