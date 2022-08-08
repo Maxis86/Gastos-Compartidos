@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 import AlertaContext from "../context/alertas/alertaContext";
 
@@ -191,7 +192,28 @@ export const Registrarse = () => {
             <NavLink activeClassName="active" className="navLink" to="../login">
               Login
             </NavLink>
+
+            
           </form>
+
+          <h2>Base de datos</h2>
+              <button
+                onClick={() => {
+                  axios.get('https://restserver-base-maxi.herokuapp.com/api/categorias')
+                      .then(function (response) {
+                        // handle success
+                        console.log(response);
+                      })
+                      .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                      })
+                }}
+                className="btn btn-outline-warning u-full-width"
+                style={{ fontSize: 12, marginBottom: 15 }}
+              >
+                Prueba
+              </button>
         </div>
       </div>
     </div>

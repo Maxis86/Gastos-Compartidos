@@ -31,6 +31,8 @@ const Resumen = () => {
       <h4>
         {mensaje} $ {resumen}
       </h4>
+
+      
     </>
   );
 };
