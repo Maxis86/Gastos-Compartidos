@@ -4,11 +4,13 @@ import {
   OBTENER_GASTO_MAXI,
   OBTENER_GASTO_GIGI,
   AGREGAR_MES,
+  AGREGAR_ANO,
   ELIMINAR_GASTOS_MAXI,
   ELIMINAR_GASTOS_GIGI,
   ELIMINAR_ALERTA,
-  ELIMINAR_TODOS_GASTOS_GIGI,
-  ELIMINAR_TODOS_GASTOS_MAXI
+  // ELIMINAR_TODOS_GASTOS_GIGI,
+  // ELIMINAR_TODOS_GASTOS_MAXI,
+  AGREGAR_ALERTA
 } from "../../types";
 
 const gastosReducer = (state, action) => {
@@ -18,8 +20,7 @@ const gastosReducer = (state, action) => {
         ...state,
         gastosMaxi: action.payload.opcion === "maxi" && [
           ...state.gastosMaxi,
-          action.payload,
-        ],
+          action.payload,],
         alerta: { msg: "Gasto Agregado" },
 
       };
@@ -37,6 +38,11 @@ const gastosReducer = (state, action) => {
         ...state,
         mes: action.payload,
       };
+    case AGREGAR_ALERTA:
+      return {
+        ...state,
+        alerta: action.payload,
+      };
     case OBTENER_GASTO_MAXI:
       return {
         ...state,
@@ -51,16 +57,16 @@ const gastosReducer = (state, action) => {
       return {
         ...state,
         gastosMaxi: state.gastosMaxi.filter(
-          (gastoMaxi) => gastoMaxi.id !== action.payload
+          (gastoMaxi) => gastoMaxi._id !== action.payload
         ),
-        alerta: { msg: "Gasto Eliminado" },
+        alerta: { msg: "Gastos Eliminados" },
       };
-
+    
     case ELIMINAR_GASTOS_GIGI:
       return {
         ...state,
         gastosGigi: state.gastosGigi.filter(
-          (gastoGigi) => gastoGigi.id !== action.payload
+          (gastoGigi) => gastoGigi._id !== action.payload
         ),
         alerta: { msg: "Gasto Eliminado" },
       };
@@ -71,19 +77,19 @@ const gastosReducer = (state, action) => {
         alerta: { msg: "" },
       };
 
-    case ELIMINAR_TODOS_GASTOS_GIGI:
-    return {
-      ...state,
-      gastosGigi: [],
-      alerta: { msg: "Gastos de Gise Eliminados" },
-    };
+    // case ELIMINAR_TODOS_GASTOS_GIGI:
+    // return {
+    //   ...state,
+    //   gastosGigi: [],
+    //   alerta: { msg: "Gastos de Gise Eliminados" },
+    // };
     
-    case ELIMINAR_TODOS_GASTOS_MAXI:
-    return {
-      ...state,
-      gastosMaxi:[],
-      alerta: { msg: "Gastos de Maxi Eliminados" },
-    };
+    // case ELIMINAR_TODOS_GASTOS_MAXI:
+    // return {
+    //   ...state,
+    //   gastosMaxi:[],
+    //   alerta: { msg: "Gastos de Maxi Eliminados" },
+    // };
 
     default:
       return state;

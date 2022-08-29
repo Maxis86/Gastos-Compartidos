@@ -3,17 +3,31 @@ import React, { useContext, useState } from "react";
 import Error from "./Error";
 
 import GastosContext from "../context/gastos/gastosContext";
+import LoginContext from "../context/login/loginContext";
+import NombreServicioContext from "../context/nombreServicio/nombreServicioContext";
 
 const Gasto = () => {
   const gastoContext = useContext(GastosContext);
-  const { agregarGastoMaxi, agregarGastoGigi, agregarMes, mes } = gastoContext;
+  const { agregarGastoMaxi, agregarGastoGigi, agregarMes, mes, agregarAno } = gastoContext;
+
+  const loginContext = useContext(LoginContext);
+  const { usuario } = loginContext;
+
+  const nombreServicioContext = useContext(NombreServicioContext);
+  const { personaUno, personaDos } = nombreServicioContext;
 
   const [gasto, guardarGasto] = useState({
     nombre: "",
     precio: "",
     opcion: "gigi",
-    
   });
+
+  const [nombres, guardarNombres] = useState({
+    nombreUno: "",
+    nombreDos: "",
+  });
+
+  const { nombreUno, nombreDos } = nombres;
 
   const [error, guardarError] = useState({
     msj: "",
@@ -82,6 +96,7 @@ const Gasto = () => {
       precio,
       opcion,
       mes,
+      usuarioCargado: usuario.nombre,
       // id: shortid.generate(),
     };
 
@@ -95,6 +110,12 @@ const Gasto = () => {
     }
 
     // Resetear el gasto
+  };
+
+  const EditarPersonas = (nombreServicio) => {
+    //guardarNombres({ ...gasto, nombreUno: nombreServicio });
+    console.log(nombreServicio);
+    //console.log(nombres.nombreDos)
   };
 
   return (
@@ -125,6 +146,7 @@ const Gasto = () => {
             />
           </div>
 
+          {/* // Se elije persona a cargar servicio */}
           <div
             className="col-3 align-self-center justify-content-end"
             style={{ marginTop: 10 }}
@@ -167,6 +189,7 @@ const Gasto = () => {
               </label>
             </div>
           </div>
+          <div className="button-primary u-full-width mb-0"></div>
         </div>
 
         {error.estado ? <Error mensaje={error.msj} /> : null}
@@ -175,35 +198,58 @@ const Gasto = () => {
           className="button-primary u-full-width mb-0"
           value="agregar gasto"
         />
-
         
-        <div
-          className="col-3 align-self-center justify-content-end"
-          style={{ marginTop: 10 }}
-        >
-     
-          <select
-            value={mes}
-            style = {{color: '#155724', marginTop: 10}}
-            className="selectpicker mb-3"
-            aria-label=".form-select-lg example"
-            onChange={ (event) => agregarMes( event.target.value)  }
-          >
-            <option value="DEFAULT" >Seleccione Otro mes</option>
-            <option value="Enero">Enero</option>
-            <option value="Febrero">Febrero</option>
-            <option value="Marzo">Marzo</option>
-            <option value="Abril">Abril</option>
-            <option value="Mayo">Mayo</option>
-            <option value="Junio">Junio</option>
-            <option value="Julio">Julio</option>
-            <option value="Agosto">Agosto</option>
-            <option value="Septiembre">Septiembre</option>
-            <option value="Octubre">Octubre</option>
-            <option value="Noviembre">Noviembre</option>
-            <option value="Diciembre">Diciembre</option>
-          </select>
-        </div>
+          <div class="row">
+            <div class="col-7">
+              <div
+                className="col-3 align-self-center justify-content-end"
+                style={{ marginTop: 10 }}
+              >
+                <select
+                  value={mes}
+                  style={{ color: "#155724", marginTop: 10 }}
+                  className="selectpicker mb-3"
+                  aria-label=".form-select-lg example"
+                  onChange={(event) => agregarMes(event.target.value)}
+                >
+                  <option value="DEFAULT">Seleccione Otro mes</option>
+                  <option value="Enero">Enero</option>
+                  <option value="Febrero">Febrero</option>
+                  <option value="Marzo">Marzo</option>
+                  <option value="Abril">Abril</option>
+                  <option value="Mayo">Mayo</option>
+                  <option value="Junio">Junio</option>
+                  <option value="Julio">Julio</option>
+                  <option value="Agosto">Agosto</option>
+                  <option value="Septiembre">Septiembre</option>
+                  <option value="Octubre">Octubre</option>
+                  <option value="Noviembre">Noviembre</option>
+                  <option value="Diciembre">Diciembre</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-5">
+              <div
+                className="col-3 align-self-center justify-content-end"
+                style={{ marginTop: 10 }}
+              >
+                <select
+                  value={mes}
+                  style={{ color: "#155724", marginTop: 10 }}
+                  className="selectpicker mb-3"
+                  aria-label=".form-select-lg example"
+                  onChange={(event) => agregarAno(event.target.value)}
+                >
+                  <option value="DEFAULT">Seleccione</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        
       </form>
     </>
   );

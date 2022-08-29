@@ -1,18 +1,23 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import clienteAxios from "../config/axios";
 
 import AlertaContext from "../context/alertas/alertaContext";
+import LoginContext from "../context/login/loginContext";
 
 import "./login.css";
 import "./spinner.css";
 
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 
 import styled from "@emotion/styled";
 import userEvent from "@testing-library/user-event";
@@ -31,7 +36,21 @@ export const Registrarse = () => {
   const alertaContext = useContext(AlertaContext);
   const { alerta, mostrarAlerta, ocultarAlerta } = alertaContext;
 
+  const loginContext = useContext(LoginContext);
+  const { mensaje, autenticado, registrarUsuario } = loginContext;
+
   const history = useNavigate();
+
+  useEffect(() => {
+    if (autenticado) {
+      return history("/home");
+    }
+
+    if (mensaje) {
+      mostrarAlerta(mensaje.msg, mensaje.categoria);
+    }
+    // eslint-disable-next-line
+  }, [mensaje, autenticado, history]);
 
   const [spinner, setSpinner] = useState(false);
 
@@ -63,7 +82,7 @@ export const Registrarse = () => {
       mostrarAlerta("Todos los campos son obligatorios", "alerta-error");
       return;
     }
-  
+
     ocultarAlerta();
 
     setError(false);
@@ -78,48 +97,38 @@ export const Registrarse = () => {
     });
   };
 
-  const signUpWithEmailPassword = (nombre) => {
-    
-    // const auth = getAuth();
-    // createUserWithEmailAndPassword(auth, email, password)
+  const signUpWithEmailPassword = async (nombre) => {
+    console.log("registrando");
+
+    registrarUsuario({
+      nombre: nombre,
+      google: false,
+      nuevoCampo: true,
+      correo: email,
+      password: password,
+      rol: "USER_ROLE",
+    });
+
+    // Mongo
+
+    // Firebase [START auth_signup_password]
+    // firebase
+    //   .auth()
+    //   .createUserWithEmailAndPassword(email, password)
     //   .then((userCredential) => {
-    //     console.log(userCredential)
-        
-    //     // userCredential.user.updateProfile({
-    //     //   displayName: nombre,
-    //     // });
+    //     // Signed in
+    //     userCredential.user.updateProfile({
+    //       displayName: nombre,
+    //     });
 
     //     setSpinner(true);
 
     //     setTimeout(() => {
-    //       return history.push("/");
     //       setSpinner(false);
+    //       return history("../Home");
     //     }, 3000);
     //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     console.log(error);
-    //   });
-
-    // [START auth_signup_password]
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        // Signed in
-        userCredential.user.updateProfile({
-          displayName: nombre,
-        });
-
-        setSpinner(true);
-
-        setTimeout(() => {
-          setSpinner(false);
-          return history("../Home");
-        }, 3000);
-      })
-      .catch((error) => {});
+    //   .catch((error) => {});
   };
 
   return (
@@ -128,7 +137,7 @@ export const Registrarse = () => {
         <div className="contenedor-form sombra-dark">
           <Titulo style={{ marginBottom: 20 }}>Registrarse</Titulo>
           {error ? (
-            <div class="alert alert-danger" role="alert">
+            <div className="alert alert-danger" role="alert">
               {alerta.msg}
             </div>
           ) : null}
@@ -169,15 +178,14 @@ export const Registrarse = () => {
               />
             </div>
 
-            {/* <NavLink activeClassName="active" className="navLink" to="../">
+            {/* <NavLink activeclassName="active" className="navLink" to="../">
               ir a Inicio
             </NavLink> */}
-           
 
             {spinner ? (
-              <div class="spinner">
-                <div class="double-bounce1"></div>
-                <div class="double-bounce2"></div>
+              <div className="spinner">
+                <div className="double-bounce1"></div>
+                <div className="double-bounce2"></div>
               </div>
             ) : (
               <div className="campo-form mt-4 d-flex justify-content-center ">
@@ -189,31 +197,13 @@ export const Registrarse = () => {
               </div>
             )}
 
-            <NavLink activeClassName="active" className="navLink" to="../login">
+            <NavLink 
+              // activeclassName="active" 
+              className="navLink" 
+              to="../login">
               Login
             </NavLink>
-
-            
           </form>
-
-          <h2>Base de datos</h2>
-              <button
-                onClick={() => {
-                  axios.get('https://restserver-base-maxi.herokuapp.com/api/categorias')
-                      .then(function (response) {
-                        // handle success
-                        console.log(response);
-                      })
-                      .catch(function (error) {
-                        // handle error
-                        console.log(error);
-                      })
-                }}
-                className="btn btn-outline-warning u-full-width"
-                style={{ fontSize: 12, marginBottom: 15 }}
-              >
-                Prueba
-              </button>
         </div>
       </div>
     </div>

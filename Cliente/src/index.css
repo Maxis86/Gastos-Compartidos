@@ -1,10 +1,13 @@
 .alert p {
   margin-bottom: 0!important;
 }
+
 body {
-  background: #001e28;  /* fallback for old browsers */
-  background: -webkit-linear-gradient(to right, #004e92, #000428);  
-  background: linear-gradient(to right, #F8CB2E, #EE5007); 
+  background: url(https://thecolor.blog/wp-content/uploads/2021/02/psicologia-del-color-azul-tonos.png);
+
+  /* background: #001e28;  /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #004e92, #000428);   */
+  /* background: linear-gradient(to right, #F8CB2E, #EE5007);  */ 
   margin: 0;
   padding: 0;
   font-family: sans-serif;
@@ -31,16 +34,17 @@ header {
   /* margin-bottom: 30px; */
 }
 h1 {
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Josefin Sans', sans-serif;
+ 
   font-weight: 100;
-  color: #46244C;
+  color: #ffffff;
   text-align: center;
-  font-size: 3.5rem!important;
+  font-size: 5.5rem!important;
 }
 h2 {
   font-family: 'Raleway', sans-serif;
   font-weight: 100;
-  color:#004e92;
+  color:#5854c6;
   margin-bottom:20px;
   font-size:3rem!important;
   text-align: center;

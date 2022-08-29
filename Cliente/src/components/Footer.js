@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="row">
           <div>
             <small className="d-block mb-3 text-muted">
-              &copy;  - MACH/GC V01.1- maximilianochamarro@gmail.com 
+              &copy;  - MACH/GC V02.0- maximilianochamarro@gmail.com 
             </small>
           </div>
         </div>

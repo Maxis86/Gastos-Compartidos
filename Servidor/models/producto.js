@@ -6,7 +6,10 @@ const ProductoSchema = Schema({
     nombre:{
         type: String,
         required: [true, 'El nombre es obligatorio'],
-        unique: true
+    },
+    opcion:{
+        type: String,
+        required: [true, 'La opcion es obligatorio'],
     },
     estado:{
         type: Boolean,
@@ -27,12 +30,17 @@ const ProductoSchema = Schema({
         ref: 'Categoria',
         required: true
     },
-    descripcion: {
+    ano: {
         type: String
     },
-    disponible: {
-        type: Boolean,
-        default: true
+    mes: {
+        type: String,
+    },
+    dia: {
+        type: String,
+    },
+    usuarioCargado: {
+        type: String,
     }
 
 });

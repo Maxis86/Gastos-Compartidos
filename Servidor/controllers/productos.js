@@ -37,13 +37,13 @@ const crearProducto = async(req, res = response ) => {
 
     const { estado, usuario, ...body } = req.body;
 
-    const productoDB = await Producto.findOne({ nombre: body.nombre });
+    // const productoDB = await Producto.findOne({ nombre: body.nombre });
 
-    if ( productoDB ) {
-        return res.status(400).json({
-            msg: `El producto ${ productoDB.nombre }, ya existe`
-        });
-    }
+    // if ( productoDB ) {
+    //     return res.status(400).json({
+    //         msg: `El producto ${ productoDB.nombre }, ya existe`
+    //     });
+    // }
 
     // Generar la data a guardar
     const data = {

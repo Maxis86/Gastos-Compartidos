@@ -1,8 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import clienteAxios from "../config/axios";
 
 import AlertaContext from "../context/alertas/alertaContext";
+import LoginContext from "../context/login/loginContext";
 
 import "./login.css";
 import "./spinner.css";
@@ -10,6 +12,7 @@ import "./spinner.css";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 import styled from "@emotion/styled";
+import tokenAuth from "../config/token";
 
 const Titulo = styled.h2`
   margin: 0 auto;
@@ -21,9 +24,14 @@ const Titulo = styled.h2`
   }
 `;
 
-export const Login = () => {
+export const Login = (props) => {
   const alertaContext = useContext(AlertaContext);
-  const { alerta, mostrarAlerta } = alertaContext;
+  const { alerta, mostrarAlerta, ocultarAlerta } = alertaContext;
+
+  const loginContext = useContext(LoginContext);
+  const { mensaje, autenticado, iniciarSesion } = loginContext;
+
+  const [yaLogeado, setYaLogeado] = useState(false);
 
   const history = useNavigate();
 
@@ -41,28 +49,49 @@ export const Login = () => {
   // extraer de usuario
   const { email, password } = usuario;
 
+  useEffect(() => {
+
+    if (autenticado) {
+      
+      return history("/home");
+    }
+
+    if (mensaje) {
+      setError(true);
+      mostrarAlerta(mensaje.msg, mensaje.categoria);
+    }
+    // eslint-disable-next-line
+
+  }, [mensaje, autenticado]);
+
+
   const onChange = (e) => {
     guardarUsuario({
       ...usuario,
       [e.target.name]: e.target.value,
     });
   };
-
+  
   // Cuando el usuario quiere iniciar sesión
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
 
     // Validar que no haya campos vacios
     if (email.trim() === "" || password.trim() === "") {
-      mostrarAlerta("Los dos campos son obligatorios", "alerta-error");
       setError(true);
+      mostrarAlerta("Los dos campos son obligatorios", "alerta-error");
       return;
     }
+
+    ocultarAlerta();
 
     setError(false);
 
     // Pasarlo al action
-    signInWithEmailPassword();
+    //signInWithEmailPassword();
+
+    console.log("iniciar sesión");
+    await iniciarSesion({ email, password });
 
     guardarUsuario({
       email: "",
@@ -70,50 +99,31 @@ export const Login = () => {
     });
   };
 
-  const signInWithEmailPassword = () => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log("Logeado");
-        console.log(user);
+  //firebase
+  // const signInWithEmailPassword = async() => {
 
-        setSpinner(true);
+  //   // Firebase
+  //   // const auth = getAuth();
+  //   // signInWithEmailAndPassword(auth, email, password)
+  //   //   .then((userCredential) => {
+  //   //     // Signed in
+  //   //     const user = userCredential.user;
+  //   //     console.log("Logeado");
+  //   //     console.log(user);
 
-        setTimeout(() => {
-          setSpinner(false);
-          return history("../Home");
-        }, 3000);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
+  //   //     setSpinner(true);
 
-    // [START auth_signin_password]
-    // firebase
-    //   .auth()
-    //   .signInWithEmailAndPassword(email, password)
-    //   .then((userCredential) => {
-    //     //Signed in
-    //     const user = userCredential.user;
-    //     console.log("user");
-    //     console.log(user);
-    //     setUsuarioLogeado(true);
+  //   //     setTimeout(() => {
+  //   //       setSpinner(false);
+  //   //       return history("../Home");
+  //   //     }, 3000);
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     const errorCode = error.code;
+  //   //     const errorMessage = error.message;
+  //   //   });
 
-    //     setSpinner(true);
-
-    //     setTimeout(() => {
-    //       setSpinner(false);
-    //       return history.push("/");
-
-    //     }, 3000);
-    //   })
-    //   .catch((error) => {
-    //     mostrarAlerta("Error", "alerta-error");
-    //   });
-  };
+  // };
 
   return (
     <div className="login">
@@ -121,7 +131,7 @@ export const Login = () => {
         <div className="contenedor-form sombra-dark">
           <Titulo className="mb-5"> Iniciar Sesión</Titulo>
           {error ? (
-            <div class="alert alert-danger" role="alert">
+            <div className="alert alert-danger" role="alert">
               {alerta.msg}
             </div>
           ) : null}
@@ -155,8 +165,6 @@ export const Login = () => {
               ir a Inicio
             </NavLink> */}
 
-
-
             {/* {usuarioLogeado ? (
               <p className="mt-4">Usuario Registrado</p>
             ) : (
@@ -179,7 +187,7 @@ export const Login = () => {
             )}
 
             <NavLink
-              activeClassName="active"
+              // activeClassName="active"
               className="navLink"
               to="../Registrarse"
             >

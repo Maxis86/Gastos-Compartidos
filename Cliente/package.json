@@ -16,6 +16,7 @@
     "react-scripts": "^5.0.1",
     "shortid": "^2.2.16",
     "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.4.28",
     "web-vitals": "^1.1.2"
   },
   "scripts": {

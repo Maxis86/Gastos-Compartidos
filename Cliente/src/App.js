@@ -1,16 +1,17 @@
 import React, { useContext, useEffect } from "react";
 
 import Footer from "../src/components/Footer";
-
 import Gasto from "./components/Gasto";
+import { Header } from "./components/Header";
 import Listado from "./components/Listado";
 import ListadoM from "./components/ListadoM";
 import Resumen from "./components/Resumen";
 
-import swal from "sweetalert";
-
 import gastosContext from "./context/gastos/gastosContext";
-import { Header } from "./components/Header";
+
+import swal from "sweetalert";
+import Swal from 'sweetalert2'
+import { Navbar } from "./components/Navbar";
 
 function App() {
   const gastoContext = useContext(gastosContext);
@@ -26,65 +27,78 @@ function App() {
   } = gastoContext;
 
   useEffect(() => {
+    
     obtenerProductos(mes);
     agregarMes(mes);
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mes]);
 
   const eliminarTodoGigi = (gastosGigi) => {
-    swal({
-      title: "Estás seguro?",
-      text: "Una vez eliminado no se podrá recuperar",
-      icon: "warning",
-      buttons:  [ "No", "Si" ] ,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) {  
-        eliminarGastosGigi(gastosGigi)
-        console.log('eliminado')
-      } else {
-        console.log('nada')
 
+    Swal.fire({
+      title: 'Estás seguro?',
+      text: "Una vez eliminado no se podrá recuperar!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Eliminado!',
+          eliminarGastosGigi(gastosGigi),
+          'success'
+        )
       }
-    });
-      
+    })
+
   };
 
   const eliminarTodoMaxi = (gastosMaxi) => {
-    swal({
-      title: "Estás seguro?",
-      text: "Una vez eliminado no se podrá recuperar",
-      icon: "warning",
-      buttons:  [ "NO" , "SI" ] ,
-      dangerMode: true,
-    })
-    .then((willDelete) => {
-      if (willDelete) {  
-        eliminarGastosMaxi(gastosMaxi)
-        console.log('eliminado')
-      } else {
-        console.log('nada')
+
+    Swal.fire({
+      title: 'Estás seguro?',
+      text: "Una vez eliminado no se podrá recuperar!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Eliminado!',
+          eliminarGastosMaxi(gastosMaxi),
+          'success'
+        )
       }
-    });
-      
+    })
   };
+  
 
   return (
     <div className="container">
       <header>
+
         <Header/>
-        {/* <h1>Gastos Compartidos</h1> */}
 
         <div className="contenido-principal contenido">
+          
           <Gasto />
-
+          
           <Resumen />
+          
           <hr></hr>
+          
           <div style={{display: 'flex', justifyContent: 'center'}}>
             {alerta.msg !== "" ? (
               <div className="alert alert-info" role="alert">
                 {alerta.msg}
+                
               </div>
             ) : null}
           </div>

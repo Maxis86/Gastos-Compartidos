@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+import LoginContext from "../context/login/loginContext";
 // import { Imagen } from './Imagen';
 
 import firebase from "firebase/compat/app";
@@ -12,6 +13,7 @@ import "firebase/compat/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import styled from "@emotion/styled";
+import { Navbar } from "./Navbar";
 
 const EnlaceHome = styled.h1`
   font-size: 500%;
@@ -49,23 +51,24 @@ const Nav = styled.nav`
 `;
 
 export const Header = () => {
-  const [usuario, guardarUsuario] = useState();
+  const loginContext = useContext(LoginContext);
+  const { usuario, cerrarSesion } = loginContext;
 
   const auth = getAuth();
   const history = useNavigate();
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      guardarUsuario(user.displayName);
-      // ...
-    } else {
-      // User is signed out
-      // ...
-    }
-  });
+  // onAuthStateChanged(auth, (user) => {
+  //   if (user) {
+  //     // User is signed in, see docs for a list of available properties
+  //     // https://firebase.google.com/docs/reference/js/firebase.User
+  //     const uid = user.uid;
+  //     guardarUsuario(user.displayName);
+  //     // ...
+  //   } else {
+  //     // User is signed out
+  //     // ...
+  //   }
+  // });
 
   // firebase.auth().onAuthStateChanged(function(user) {
   //   if (user) {
@@ -75,22 +78,22 @@ export const Header = () => {
   //   }
   // });
 
-  const cerrarSesion = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        guardarUsuario("");
-      })
-      .catch((error) => {
-        //console.log("usuario no Logeado error")
-        // An error happened.
-      });
+  // const cerrarSesion = () => {
+  //   // firebase
+  //   //   .auth()
+  //   //   .signOut()
+  //   //   .then(() => {
+  //   //     guardarUsuario("");
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     //console.log("usuario no Logeado error")
+  //   //     // An error happened.
+  //   //   });
 
-      return history("../Login");
+  //   //   return history("../Login");
 
-  };
-
+  // };
+  
   return (
     <>
       <div className="container">
@@ -102,9 +105,9 @@ export const Header = () => {
 
           {!usuario ? (
             <>
-              <div ClassName=''>
+              <div className=''>
               <NavLink
-                activeClassName="active"
+                // activeClassName="active"
                 className="link-secondary nav-link"
                 to="../registrarse"
               >
@@ -113,7 +116,7 @@ export const Header = () => {
               </NavLink>
 
               <NavLink
-                activeClassName="active"
+                // activeClassName="active"
                 className="link-secondary nav-link"
                 to="../login"
               >
@@ -124,60 +127,20 @@ export const Header = () => {
           ) : (
             <>
               <div className="nav col-12 mb-2 justify-content-center mb-md-0">
-                <h3 style={{ fontSize: 6 }}>Hola {usuario}</h3>
+                <h2 style={{ fontSize: 15 }}>Hola {usuario.nombre}</h2>
               </div>
               <button
                 type="button"
-                class="button-primary  mb-0"
+                className="button-primary  mb-0"
                 onClick={cerrarSesion}
               >
                 Cerrar Sesión
               </button>
             </>
           )}
-
-          
         </header>
       </div>
     </>
   );
 };
 
-{
-  /* <Encabezado>
-        
-        <Titulo>
-          
-        
-          <EnlaceHome >
-            Gastos Compartidos
-          </EnlaceHome>
-         
-          <Nav>
-          
-          { !usuario ? (
-                        <>
-                            <NavLink activeClassName="active" className="link-secondary nav-link" to='../registrarse'> Crear Cuenta</NavLink>
-                            <NavLink activeClassName="active" className="link-secondary disabled nav-link" to='../login'>|</NavLink>
-                            <NavLink activeClassName="active" className="link-secondary nav-link" to='../login'>Iniciar Sesión</NavLink>
-                        </>
-                    ) : (
-                        <>
-                          <Logeado>Hola {usuario} </Logeado> 
-
-                          <button 
-                            type="button" 
-                            class="btn btn-light btn-sm m-3" 
-                            onClick={cerrarSesion}
-                          >
-                          Cerrar Sesión
-                          </button>
-                          
-                        </>
-            ) }
-            
-            </Nav>
-        </Titulo>
-        
-      </Encabezado> */
-}
