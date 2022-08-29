@@ -13,7 +13,6 @@ import "firebase/compat/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import styled from "@emotion/styled";
-import { Navbar } from "./Navbar";
 
 const EnlaceHome = styled.h1`
   font-size: 500%;

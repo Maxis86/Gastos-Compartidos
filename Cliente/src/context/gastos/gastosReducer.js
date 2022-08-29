@@ -38,6 +38,11 @@ const gastosReducer = (state, action) => {
         ...state,
         mes: action.payload,
       };
+    case AGREGAR_ANO:
+      return {
+        ...state,
+        ano: action.payload,
+      };
     case AGREGAR_ALERTA:
       return {
         ...state,

@@ -67,7 +67,8 @@ const GastosState = (props) => {
         categoria: "62f78207e82e65e7cfe90c7d",
         precio: gasto.precio,
         mes: gasto.mes,
-        ano: fecha.getFullYear(),
+        //ano: fecha.getFullYear(),
+        ano: gasto.ano,
         dia: fecha.getDate()
       });
       
@@ -114,7 +115,8 @@ const GastosState = (props) => {
         categoria: "62f78207e82e65e7cfe90c7d",
         precio: gasto.precio,
         mes: gasto.mes,
-        ano: fecha.getFullYear(),
+        //ano: fecha.getFullYear(),
+        ano: gasto.ano,
         dia: fecha.getDate(),
         usuarioCargado : gasto.usuarioCargado
       });
@@ -140,7 +142,7 @@ const GastosState = (props) => {
     }, 6000);
   };
 
-  const agregarMes = (mes) => {
+  const agregarMes = (mes, ano) => {
     if (mes === "") {
       var meses = [
         "Enero",
@@ -167,37 +169,17 @@ const GastosState = (props) => {
       payload: mes,
     });
 
-    obtenerProductos(mes);
+    obtenerProductos(mes, ano);
   };
 
-  const agregarAno = (ano) => {
-    // if (mes === "") {
-    //   var meses = [
-    //     "Enero",
-    //     "Febrero",
-    //     "Marzo",
-    //     "Abril",
-    //     "Mayo",
-    //     "Junio",
-    //     "Julio",
-    //     "Agosto",
-    //     "Septiembre",
-    //     "Octubre",
-    //     "Noviembre",
-    //     "Diciembre",
-    //   ];
-    //   const fecha = new Date();
-    //   const mesHoy = fecha.getMonth();
+  const agregarAno = (mes, ano) => {
+          
+    dispatch({
+      type: AGREGAR_ANO,
+      payload: ano,
+    });
 
-    //   mes = meses[mesHoy];
-    // }
-
-    // dispatch({
-    //   type: AGREGAR_MES,
-    //   payload: mes,
-    // });
-
-    // obtenerProductos(mes);
+    obtenerProductos(mes, ano);
   };
 
   const eliminarGastosGigi = (gastosGigi) => {
@@ -256,13 +238,13 @@ const GastosState = (props) => {
     }, 6000);
   };
 
-  const editarGasto = async (id, nombre, precio, mes) => {
+  const editarGasto = async (id, nombre, precio, mes, ano) => {
     
     try {
 
       await clienteAxios.put(`/api/productos/${id}`, {nombre:nombre, precio:precio})
 
-      obtenerProductos(mes)
+      obtenerProductos(mes, ano)
       
       dispatch({
         type: AGREGAR_ALERTA,
@@ -338,7 +320,7 @@ const GastosState = (props) => {
     }, 6000);
   };
 
-  const obtenerProductos = async (mesActual) => {
+  const obtenerProductos = async (mesActual, anoActual) => {
     if (mesActual === "") {
       var meses = [
         "Enero",
@@ -367,7 +349,7 @@ const GastosState = (props) => {
       const gastosM = [];
       for (let index = 0; index < respuesta.data.results.length; index++) {
         const elementMaxi = respuesta.data.results[index];
-        if (elementMaxi.mes === mesActual && elementMaxi.opcion === "maxi") {
+        if (elementMaxi.mes === mesActual && elementMaxi.ano === anoActual && elementMaxi.opcion === "maxi") {
           gastosM.push(
             elementMaxi
           );
@@ -416,7 +398,7 @@ const GastosState = (props) => {
       const gastosG = [];
       for (let i = 0; i < respuestaG.data.results.length; i++) {
         const elementGigi= respuestaG.data.results[i];
-        if (elementGigi.mes === mesActual && elementGigi.opcion === "gigi") {
+        if (elementGigi.mes === mesActual && elementGigi.ano === anoActual && elementGigi.opcion === "gigi") {
           gastosG.push(
             elementGigi
           );

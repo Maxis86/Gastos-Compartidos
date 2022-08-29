@@ -8,7 +8,7 @@ import NombreServicioContext from "../context/nombreServicio/nombreServicioConte
 
 const Gasto = () => {
   const gastoContext = useContext(GastosContext);
-  const { agregarGastoMaxi, agregarGastoGigi, agregarMes, mes, agregarAno } = gastoContext;
+  const { agregarGastoMaxi, agregarGastoGigi, agregarMes, mes, agregarAno, ano } = gastoContext;
 
   const loginContext = useContext(LoginContext);
   const { usuario } = loginContext;
@@ -96,6 +96,7 @@ const Gasto = () => {
       precio,
       opcion,
       mes,
+      ano,
       usuarioCargado: usuario.nombre,
       // id: shortid.generate(),
     };
@@ -200,7 +201,7 @@ const Gasto = () => {
         />
         
           <div class="row">
-            <div class="col-7">
+            <div class="col">
               <div
                 className="col-3 align-self-center justify-content-end"
                 style={{ marginTop: 10 }}
@@ -210,7 +211,7 @@ const Gasto = () => {
                   style={{ color: "#155724", marginTop: 10 }}
                   className="selectpicker mb-3"
                   aria-label=".form-select-lg example"
-                  onChange={(event) => agregarMes(event.target.value)}
+                  onChange={(event) => agregarMes(event.target.value, ano)}
                 >
                   <option value="DEFAULT">Seleccione Otro mes</option>
                   <option value="Enero">Enero</option>
@@ -228,19 +229,18 @@ const Gasto = () => {
                 </select>
               </div>
             </div>
-            <div class="col-5">
+            <div class="col">
               <div
                 className="col-3 align-self-center justify-content-end"
                 style={{ marginTop: 10 }}
               >
                 <select
-                  value={mes}
+                  value={ano}
                   style={{ color: "#155724", marginTop: 10 }}
                   className="selectpicker mb-3"
                   aria-label=".form-select-lg example"
-                  onChange={(event) => agregarAno(event.target.value)}
+                  onChange={(event) => agregarAno(mes, event.target.value)}
                 >
-                  <option value="DEFAULT">Seleccione</option>
                   <option value="2022">2022</option>
                   <option value="2023">2023</option>
                   <option value="2024">2024</option>

@@ -11,7 +11,6 @@ import gastosContext from "./context/gastos/gastosContext";
 
 import swal from "sweetalert";
 import Swal from 'sweetalert2'
-import { Navbar } from "./components/Navbar";
 
 function App() {
   const gastoContext = useContext(gastosContext);
@@ -24,12 +23,13 @@ function App() {
     mes,
     agregarMes,
     alerta,
+    ano
   } = gastoContext;
 
   useEffect(() => {
     
-    obtenerProductos(mes);
-    agregarMes(mes);
+    obtenerProductos(mes, ano);
+    agregarMes(mes, ano);
     
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mes]);
