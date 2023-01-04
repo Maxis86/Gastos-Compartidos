@@ -200,8 +200,8 @@ const Gasto = () => {
           value="agregar gasto"
         />
         
-          <div class="row">
-            <div class="col">
+          <div className="row">
+            <div className="col">
               <div
                 className="col-3 align-self-center justify-content-end"
                 style={{ marginTop: 10 }}
@@ -229,7 +229,7 @@ const Gasto = () => {
                 </select>
               </div>
             </div>
-            <div class="col">
+            <div className="col">
               <div
                 className="col-3 align-self-center justify-content-end"
                 style={{ marginTop: 10 }}

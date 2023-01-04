@@ -88,7 +88,14 @@ export const Registrarse = () => {
     setError(false);
 
     // Pasarlo al action
+    setSpinner(true);
+
     signUpWithEmailPassword(nombre);
+
+    setTimeout(() => {
+      setSpinner(false);
+      return history("../Home");
+    }, 3000);
 
     guardarUsuario({
       nombre: "",
@@ -134,7 +141,7 @@ export const Registrarse = () => {
   return (
     <div className="login">
       <div className="form-usuario">
-        <div className="contenedor-form sombra-dark">
+        <div className="contenedor-form sombra-dark" style={{ height: 550 }}>
           <Titulo style={{ marginBottom: 20 }}>Registrarse</Titulo>
           {error ? (
             <div className="alert alert-danger" role="alert">
@@ -197,10 +204,11 @@ export const Registrarse = () => {
               </div>
             )}
 
-            <NavLink 
-              // activeclassName="active" 
-              className="navLink" 
-              to="../login">
+            <NavLink
+              // activeclassName="active"
+              className="navLink"
+              to="../login"
+            >
               Login
             </NavLink>
           </form>

@@ -50,9 +50,7 @@ export const Login = (props) => {
   const { email, password } = usuario;
 
   useEffect(() => {
-
     if (autenticado) {
-      
       return history("/home");
     }
 
@@ -61,9 +59,7 @@ export const Login = (props) => {
       mostrarAlerta(mensaje.msg, mensaje.categoria);
     }
     // eslint-disable-next-line
-
   }, [mensaje, autenticado]);
-
 
   const onChange = (e) => {
     guardarUsuario({
@@ -71,7 +67,7 @@ export const Login = (props) => {
       [e.target.name]: e.target.value,
     });
   };
-  
+
   // Cuando el usuario quiere iniciar sesión
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -91,8 +87,16 @@ export const Login = (props) => {
     //signInWithEmailPassword();
 
     console.log("iniciar sesión");
+
+    setSpinner(true);
+
+   
     await iniciarSesion({ email, password });
 
+    setTimeout(() => {
+      setSpinner(false);
+      return history("../Home");
+    }, 3000);
     guardarUsuario({
       email: "",
       password: "",
@@ -172,9 +176,9 @@ export const Login = (props) => {
             )} */}
 
             {spinner ? (
-              <div class="spinner">
-                <div class="double-bounce1"></div>
-                <div class="double-bounce2"></div>
+              <div className="spinner">
+                <div className="double-bounce1"></div>
+                <div className="double-bounce2"></div>
               </div>
             ) : (
               <div className="campo-form mt-5 d-flex justify-content-center ">

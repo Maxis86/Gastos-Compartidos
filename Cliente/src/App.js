@@ -10,7 +10,8 @@ import Resumen from "./components/Resumen";
 import gastosContext from "./context/gastos/gastosContext";
 
 import swal from "sweetalert";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
+import { NavLink } from "react-router-dom";
 
 function App() {
   const gastoContext = useContext(gastosContext);
@@ -23,82 +24,83 @@ function App() {
     mes,
     agregarMes,
     alerta,
-    ano
+    ano,
   } = gastoContext;
 
   useEffect(() => {
-    
     obtenerProductos(mes, ano);
     agregarMes(mes, ano);
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mes]);
 
   const eliminarTodoGigi = (gastosGigi) => {
-
     Swal.fire({
-      title: 'Estás seguro?',
+      title: "Estás seguro?",
       text: "Una vez eliminado no se podrá recuperar!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si',
-      cancelButtonText: 'No'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire(
-          'Eliminado!',
-          eliminarGastosGigi(gastosGigi),
-          'success'
-        )
+        Swal.fire("Eliminado!", eliminarGastosGigi(gastosGigi), "success");
       }
-    })
-
+    });
   };
 
   const eliminarTodoMaxi = (gastosMaxi) => {
-
     Swal.fire({
-      title: 'Estás seguro?',
+      title: "Estás seguro?",
       text: "Una vez eliminado no se podrá recuperar!",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si',
-      cancelButtonText: 'No'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si",
+      cancelButtonText: "No",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire(
-          'Eliminado!',
-          eliminarGastosMaxi(gastosMaxi),
-          'success'
-        )
+        Swal.fire("Eliminado!", eliminarGastosMaxi(gastosMaxi), "success");
       }
-    })
+    });
   };
-  
 
   return (
     <div className="container">
       <header>
-
-        <Header/>
+        <NavLink
+          // activeclassName="active"
+          className="navLink btn-outline-warning u-full btn-sm"
+          to="../Datos"
+          style={{ fontSize: 12, marginBottom: 15 }}
+        >
+          Datos
+        </NavLink>
+        {/* <NavLink
+          // activeclassName="active"
+          className="navLink btn-outline-warning u-full btn-sm"
+          //to="../login"
+          style={{ fontSize: 12, marginBottom: 15 }}
+        >
+          Usuarios
+        </NavLink> */}
+        
+        <Header />
 
         <div className="contenido-principal contenido">
-          
           <Gasto />
-          
+
           <Resumen />
-          
+
           <hr></hr>
-          
-          <div style={{display: 'flex', justifyContent: 'center'}}>
+
+          <div style={{ display: "flex", justifyContent: "center" }}>
             {alerta.msg !== "" ? (
               <div className="alert alert-info" role="alert">
                 {alerta.msg}
-                
               </div>
             ) : null}
           </div>

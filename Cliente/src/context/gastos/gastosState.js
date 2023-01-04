@@ -27,7 +27,7 @@ import {
   ELIMINAR_GASTOS_GIGI,
   ELIMINAR_ALERTA,
   AGREGAR_ALERTA,
-
+  BUSCAR_PRODUCTO,
 } from "../../types";
 
 const GastosState = (props) => {
@@ -39,6 +39,7 @@ const GastosState = (props) => {
       msg: "",
     },
     ano: "",
+    productosBuscados: null,
   };
 
   const [state, dispatch] = useReducer(gastosReducer, initialState);
@@ -46,7 +47,6 @@ const GastosState = (props) => {
   //Funciones
 
   const agregarGastoMaxi = async (gasto) => {
-   
     const fecha = new Date();
 
     try {
@@ -69,10 +69,10 @@ const GastosState = (props) => {
         mes: gasto.mes,
         //ano: fecha.getFullYear(),
         ano: gasto.ano,
-        dia: fecha.getDate()
+        dia: fecha.getDate(),
       });
-      
-      gasto= respuesta.data;
+
+      gasto = respuesta.data;
 
       dispatch({
         type: AGREGAR_GASTO_MAXI,
@@ -82,7 +82,6 @@ const GastosState = (props) => {
       //console.log("Documento escrito con el ID: ", docRef.id);
     } catch (error) {
       console.error("Error al agregar el documento: ", error);
-
     }
 
     setTimeout(() => {
@@ -93,8 +92,6 @@ const GastosState = (props) => {
   };
 
   const agregarGastoGigi = async (gasto) => {
-  
-
     const fecha = new Date();
 
     try {
@@ -108,7 +105,7 @@ const GastosState = (props) => {
       // });
 
       //Node
-      
+
       const respuesta = await clienteAxios.post("/api/productos", {
         nombre: gasto.nombre,
         opcion: gasto.opcion,
@@ -118,11 +115,10 @@ const GastosState = (props) => {
         //ano: fecha.getFullYear(),
         ano: gasto.ano,
         dia: fecha.getDate(),
-        usuarioCargado : gasto.usuarioCargado
+        usuarioCargado: gasto.usuarioCargado,
       });
 
       gasto = respuesta.data;
-      
 
       dispatch({
         type: AGREGAR_GASTO_GIGI,
@@ -131,9 +127,8 @@ const GastosState = (props) => {
 
       //console.log("Documento escrito con el ID: ", docRef.id);
     } catch (error) {
-
       console.log(error.response.data.msg);
-    }   
+    }
 
     setTimeout(() => {
       dispatch({
@@ -164,16 +159,23 @@ const GastosState = (props) => {
       mes = meses[mesHoy];
     }
 
+    const fecha = new Date();
+    ano = fecha.getFullYear() + "";
+
     dispatch({
       type: AGREGAR_MES,
       payload: mes,
+    });
+
+    dispatch({
+      type: AGREGAR_ANO,
+      payload: ano,
     });
 
     obtenerProductos(mes, ano);
   };
 
   const agregarAno = (mes, ano) => {
-          
     dispatch({
       type: AGREGAR_ANO,
       payload: ano,
@@ -183,9 +185,8 @@ const GastosState = (props) => {
   };
 
   const eliminarGastosGigi = (gastosGigi) => {
-    
     gastosGigi.forEach((gasto) => {
-      eliminarGasto(gasto._id)
+      eliminarGasto(gasto._id);
     });
 
     // gastosGigi.forEach((gasto) =>
@@ -206,14 +207,13 @@ const GastosState = (props) => {
   };
 
   const eliminarGastosMaxi = (gastosMaxi) => {
- 
     gastosMaxi.forEach((gasto) => {
-      console.log('gasto._id');
+      console.log("gasto._id");
       console.log(gasto._id);
-      
-      eliminarGasto(gasto._id)
+
+      eliminarGasto(gasto._id);
     });
-    
+
     // gastosMaxi.forEach((gasto) =>
     //   db
     //     .collection("gastoMaxi")
@@ -238,23 +238,76 @@ const GastosState = (props) => {
     }, 6000);
   };
 
-  const editarGasto = async (id, nombre, precio, mes, ano) => {
-    
+  const buscarProducto = async (producto) => {
     try {
+      if (producto === "") {
+        const alerta = {
+          msg: "Agrege un producto",
+          categoria: "alerta-error",
+        };
 
-      await clienteAxios.put(`/api/productos/${id}`, {nombre:nombre, precio:precio})
+        dispatch({
+          type: AGREGAR_ALERTA,
+          payload: alerta,
+        });
 
-      obtenerProductos(mes, ano)
-      
+        setTimeout(() => {
+          dispatch({
+            type: ELIMINAR_ALERTA,
+          });
+        }, 6000);
+
+        return;
+      }
+
+      const respuesta = await clienteAxios.get(
+        `/api/buscar/productos/${producto}`
+      );
+
+      if (respuesta.data.results.length === 0) {
+        const alerta = {
+          msg: "No se encontraron datos",
+          categoria: "alerta-error",
+        };
+
+        dispatch({
+          type: AGREGAR_ALERTA,
+          payload: alerta,
+        });
+
+        setTimeout(() => {
+          dispatch({
+            type: ELIMINAR_ALERTA,
+          });
+        }, 6000);
+
+        return;
+      }
+
+      dispatch({
+        type: BUSCAR_PRODUCTO,
+        payload: respuesta.data.results,
+      });
+    } catch (error) {
+      console.log(error.response.data);
+    }
+  };
+
+  const editarGasto = async (id, nombre, precio, mes, ano) => {
+    try {
+      await clienteAxios.put(`/api/productos/${id}`, {
+        nombre: nombre,
+        precio: precio,
+      });
+
+      obtenerProductos(mes, ano);
+
       dispatch({
         type: AGREGAR_ALERTA,
         payload: { msg: "Gasto Editado" },
       });
-
     } catch (error) {
-      
       console.log(error.response.data);
-
     }
 
     setTimeout(() => {
@@ -265,25 +318,20 @@ const GastosState = (props) => {
   };
 
   const eliminarGasto = async (id) => {
-    
     try {
-      const respuesta = await clienteAxios.delete(`/api/productos/${id}`)
-      
-      dispatch({
-              type: ELIMINAR_GASTOS_MAXI,
-              payload: id,
-            });
-      dispatch({
-              type: ELIMINAR_GASTOS_GIGI,
-              payload: id,
-            });
+      const respuesta = await clienteAxios.delete(`/api/productos/${id}`);
 
+      dispatch({
+        type: ELIMINAR_GASTOS_MAXI,
+        payload: id,
+      });
+      dispatch({
+        type: ELIMINAR_GASTOS_GIGI,
+        payload: id,
+      });
     } catch (error) {
-      
       console.log(error.response.data);
-
     }
-
 
     // db.collection("gastoMaxi")
     //   .doc(id)
@@ -343,16 +391,17 @@ const GastosState = (props) => {
     }
 
     try {
-
       const respuesta = await clienteAxios.get("/api/buscar/opcion/maxi");
 
       const gastosM = [];
       for (let index = 0; index < respuesta.data.results.length; index++) {
         const elementMaxi = respuesta.data.results[index];
-        if (elementMaxi.mes === mesActual && elementMaxi.ano === anoActual && elementMaxi.opcion === "maxi") {
-          gastosM.push(
-            elementMaxi
-          );
+        if (
+          elementMaxi.mes === mesActual &&
+          elementMaxi.ano === anoActual &&
+          elementMaxi.opcion === "maxi"
+        ) {
+          gastosM.push(elementMaxi);
         }
       }
       dispatch({
@@ -392,16 +441,17 @@ const GastosState = (props) => {
     // });
 
     try {
-
       const respuestaG = await clienteAxios.get("/api/buscar/opcion/gigi");
 
       const gastosG = [];
       for (let i = 0; i < respuestaG.data.results.length; i++) {
-        const elementGigi= respuestaG.data.results[i];
-        if (elementGigi.mes === mesActual && elementGigi.ano === anoActual && elementGigi.opcion === "gigi") {
-          gastosG.push(
-            elementGigi
-          );
+        const elementGigi = respuestaG.data.results[i];
+        if (
+          elementGigi.mes === mesActual &&
+          elementGigi.ano === anoActual &&
+          elementGigi.opcion === "gigi"
+        ) {
+          gastosG.push(elementGigi);
         }
       }
       //console.log(gastosG)
@@ -412,7 +462,6 @@ const GastosState = (props) => {
     } catch (error) {
       console.log(error.response);
     }
-   
   };
 
   return (
@@ -421,8 +470,9 @@ const GastosState = (props) => {
         gastosGigi: state.gastosGigi,
         gastosMaxi: state.gastosMaxi,
         mes: state.mes,
-        ano:state.ano,
+        ano: state.ano,
         alerta: state.alerta,
+        productosBuscados: state.productosBuscados,
         agregarGastoMaxi,
         agregarGastoGigi,
         obtenerProductos,
@@ -431,7 +481,8 @@ const GastosState = (props) => {
         eliminarGastosMaxi,
         agregarMes,
         agregarAno,
-        editarGasto
+        editarGasto,
+        buscarProducto,
       }}
     >
       {props.children}

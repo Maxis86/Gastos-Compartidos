@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { Registrarse } from "./pages/Registrarse.js";
 import { Login } from "./pages/Login.js";
+import { Datos } from "./pages/Datos.js";
+
 
 import App from "./App";
 import AlertaState from "./context/alertas/alertaState";
@@ -31,11 +33,13 @@ export const AppRouter = () => {
                 <Route path="/" element={<Login />} />
                 <Route exact path="/Login" element={<Login />} />
                 <Route exact path="/Registrarse" element={<Registrarse />} />
+                <Route exact path="/Datos" element={<Datos />} />
                 <Route
                   exact
                   path="/Home"
-                  element={<RutaPrivada component={<App />} />}
-                />
+                  //element={<RutaPrivada component={<App />} />}
+                  element={<App />} />
+                
                 {/* <RutaPrivada exact path="/Home" element={<App />} /> */}
               </Routes>
             </div>
